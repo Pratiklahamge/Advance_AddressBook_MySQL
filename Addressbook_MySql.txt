@@ -1,0 +1,254 @@
+---AddressBook Services---
+===========================================================================================
+UC1 Creating database as AddressBookServices
+===========================================================================================
+MySQL Shell 8.0.27
+
+Copyright (c) 2016, 2021, Oracle and/or its affiliates.
+Oracle is a registered trademark of Oracle Corporation and/or its affiliates.
+Other names may be trademarks of their respective owners.
+
+Type '\help' or '\?' for help; '\quit' to exit.
+ MySQL  JS > /sql
+SyntaxError: Invalid regular expression: missing /
+ MySQL  JS > \sql
+Switching to SQL mode... Commands end with ;
+ MySQL  SQL > \connect root@localhost:3306
+Creating a session to 'root@localhost:3306'
+Please provide the password for 'root@localhost:3306': ****
+Save password for 'root@localhost:3306'? [Y]es/[N]o/Ne[v]er (default No): y
+Fetching schema names for autocompletion... Press ^C to stop.
+Your MySQL connection id is 17
+Server version: 8.0.27 MySQL Community Server - GPL
+No default schema selected; type \use <schema> to set one.
+ MySQL  localhost:3306 ssl  SQL > show databases;
++--------------------+
+| Database           |
++--------------------+
+| database_name      |
+| demo               |
+| dta                |
+| information_schema |
+| my_data            |
+| my_database        |
+| mysql              |
+| performance_schema |
+| sys                |
++--------------------+
+9 rows in set (0.0012 sec)
+ MySQL  localhost:3306 ssl  SQL > create database addressbookservice;
+Query OK, 1 row affected (0.3329 sec)
+ MySQL  localhost:3306 ssl  SQL > show databases;
++--------------------+
+| Database           |
++--------------------+
+| addressbookservice |
+| database_name      |
+| demo               |
+| dta                |
+| information_schema |
+| my_data            |
+| my_database        |
+| mysql              |
+| performance_schema |
+| sys                |
++--------------------+
+10 rows in set (0.0015 sec)
+ MySQL  localhost:3306 ssl  SQL > use addressbookservice;
+Default schema set to `addressbookservice`.
+Fetching table and column names from `addressbookservice` for auto-completion... Press ^C to stop.
+
+=============================================================================================================
+UC2 - Ablity to create a address book table with first and lastname, address,city,state,zip,pone number, email as its attributes.
+==============================================================================================================
+
+ MySQL  localhost:3306 ssl  address_bookservices  SQL > Create table addressbook(
+                                                     -> firstname varchar(30) not null,
+                                                     -> lastname varchar(25) not null,
+                                                     -> address varchar(55) not null,
+                                                     -> city varchar(25) not null,
+                                                     -> state varchar(25) not null,
+                                                     -> zip varchar(7) not null,
+                                                     -> phoneNo varchar(15) not null,
+                                                     -> email varchar(15) not null,
+                                                     -> PRIMARY KEY (firstName));
+Query OK, 0 rows affected (2.2068 sec)
+
+ MySQL  localhost:3306 ssl  address_bookservices  SQL > desc addressbook;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| firstname | varchar(30) | NO   | PRI | NULL    |       |
+| lastname  | varchar(25) | NO   |     | NULL    |       |
+| address   | varchar(55) | NO   |     | NULL    |       |
+| city      | varchar(25) | NO   |     | NULL    |       |
+| state     | varchar(25) | NO   |     | NULL    |       |
+| zip       | varchar(7)  | NO   |     | NULL    |       |
+| phoneNo   | varchar(15) | NO   |     | NULL    |       |
+| email     | varchar(15) | NO   |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+8 rows in set (0.0847 sec)
+
+=========================================================================================================================
+UC3_Ablity to insert new contact in address_book
+=========================================================================================================================
+
+ MySQL  localhost:3306 ssl  address_bookservices  SQL > insert into addressbook(firstname,lastname,address,city,state,zip,phoneNo,email) values
+                                                     -> ('pratik','lahamge','rajapeth','amravati','maharashtra','444105','8545854585','pr@gmail.com'),
+                                                     -> ('suresh','dehanti','rajapeth','palipuram','andrapradesh','444158','8585858962','sh@gmail.com'),
+                                                     -> ('sonali','kolapkar','rajapeth','amravati','maharashtra','444605','7769525458','sl@gmail.com'),
+                                                     -> ('shridhar','pandit','rajapeth','pune','utrakhand','4585','8523698521','s@gmail.com');
+Query OK, 4 rows affected (0.2529 sec)
+
+Records: 4  Duplicates: 0  Warnings: 0
+ MySQL  localhost:3306 ssl  address_bookservices  SQL > select * from addressbook;
++-----------+----------+----------+-----------+--------------+--------+------------+--------------+
+| firstname | lastname | address  | city      | state        | zip    | phoneNo    | email        |
++-----------+----------+----------+-----------+--------------+--------+------------+--------------+
+| pratik    | lahamge  | rajapeth | amravati  | maharashtra  | 444105 | 8545854585 | pr@gmail.com |
+| shridhar  | pandit   | rajapeth | pune      | utrakhand    | 4585   | 8523698521 | s@gmail.com  |
+| sonali    | kolapkar | rajapeth | amravati  | maharashtra  | 444605 | 7769525458 | sl@gmail.com |
+| suresh    | dehanti  | rajapeth | palipuram | andrapradesh | 444158 | 8585858962 | sh@gmail.com |
++-----------+----------+----------+-----------+--------------+--------+------------+--------------+
+4 rows in set (0.0011 sec)
+ MySQL  localhost:3306 ssl  address_bookservices  SQL > ^C
+
+=========================================================================================================================================
+UC4 - Ditexisting contact peson useing their name
+=========================================================================================================================================
+ MySQL  localhost:3306 ssl  address_bookservices  SQL > update addressbook set phoneNo = '8965854123' where fistname ='suresh';
+ERROR: 1054 (42S22): Unknown column 'fistname' in 'where clause'
+ MySQL  localhost:3306 ssl  address_bookservices  SQL > ^C
+ MySQL  localhost:3306 ssl  address_bookservices  SQL > update addressbook set phoneNo = '8545256325' where firstname ='suresh';
+Query OK, 1 row affected (0.1195 sec)
+
+Rows matched: 1  Changed: 1  Warnings: 0
+ MySQL  localhost:3306 ssl  address_bookservices  SQL > select * from addressbook;
++-----------+----------+----------+-----------+--------------+--------+------------+--------------+
+| firstname | lastname | address  | city      | state        | zip    | phoneNo    | email        |
++-----------+----------+----------+-----------+--------------+--------+------------+--------------+
+| pratik    | lahamge  | rajapeth | amravati  | maharashtra  | 444105 | 8545854585 | pr@gmail.com |
+| shridhar  | pandit   | rajapeth | pune      | utrakhand    | 4585   | 8523698521 | s@gmail.com  |
+| sonali    | kolapkar | rajapeth | amravati  | maharashtra  | 444605 | 7769525458 | sl@gmail.com |
+| suresh    | dehanti  | rajapeth | palipuram | andrapradesh | 444158 | 8545256325 | sh@gmail.com |
++-----------+----------+----------+-----------+--------------+--------+------------+--------------+
+4 rows in set (0.0455 sec)
+
+=======================================================================================================================================================
+UC5- Ablity to delete person using FistName
+=======================================================================================================================================================
+ MySQL  localhost:3306 ssl  address_bookservices  SQL > Delete from addressbook where firstname ="shridhar";
+Query OK, 1 row affected (0.0918 sec)
+ MySQL  localhost:3306 ssl  address_bookservices  SQL >
+
+====================================================================================================================================================
+UC6- Ability to Retrieve person belongng to a city or state from the Address Book
+===================================================================================================================
+                                                     
+ MySQL  localhost:3306 ssl  address_bookservices  SQL > select * from
+                                                     -> addressbook where
+                                                     -> city ="pune";
+Empty set (0.0107 sec)
+ MySQL  localhost:3306 ssl  address_bookservices  SQL > select * from addressbook;
++-----------+----------+----------+-----------+--------------+--------+------------+--------------+
+| firstname | lastname | address  | city      | state        | zip    | phoneNo    | email        |
++-----------+----------+----------+-----------+--------------+--------+------------+--------------+
+| pratik    | lahamge  | rajapeth | amravati  | maharashtra  | 444105 | 8545854585 | pr@gmail.com |
+| sonali    | kolapkar | rajapeth | amravati  | maharashtra  | 444605 | 7769525458 | sl@gmail.com |
+| suresh    | dehanti  | rajapeth | palipuram | andrapradesh | 444158 | 8545256325 | sh@gmail.com |
++-----------+----------+----------+-----------+--------------+--------+------------+--------------+
+3 rows in set (0.0009 sec)
+=========================================================================================================================================================
+ UC7-Ability to understand the size of address book by City and State
+=================================================================================================================================
+
+ MySQL  localhost:3306 ssl  address_bookservices  SQL >  select count(firstName)from addressbook where city = "palipuram";
++------------------+
+| count(firstName) |
++------------------+
+|                1 |
++------------------+
+1 row in set (0.0439 sec)
+
+===================================================================================================================
+UC8-Ability to retrieve entries sorted alphabetically by Person’s name for a given city
+=========================================================================================================================
+ MySQL  localhost:3306 ssl  address_bookservices  SQL > select firstname,city from addressbook order by city;
++-----------+-----------+
+| firstname | city      |
++-----------+-----------+
+| pratik    | amravati  |
+| sonali    | amravati  |
+| suresh    | palipuram |
++-----------+-----------+
+3 rows in set (0.0012 sec)
+
+====================================================================================================================================
+UC9__Ability to identify each Address Book with name andType
+===========================================================================================================================
+
+ MySQL  localhost:3306 ssl  address_bookservices  SQL > alter table addressbook add type varchar(25)after lastName;
+Query OK, 0 rows affected (2.5546 sec)
+
+Records: 0  Duplicates: 0  Warnings: 0
+ MySQL  localhost:3306 ssl  address_bookservices  SQL > update addressbook set type ='family' where firstName ="suresh";
+Query OK, 1 row affected (0.1042 sec)
+
+Rows matched: 1  Changed: 1  Warnings: 0
+ MySQL  localhost:3306 ssl  address_bookservices  SQL > update addressbook set type ='Friend' where firstName ="sonali";
+Query OK, 1 row affected (0.1106 sec)
+
+Rows matched: 1  Changed: 1  Warnings: 0
+ MySQL  localhost:3306 ssl  address_bookservices  SQL > update addressbook set type ='profession' where firstName ="pratik";
+Query OK, 1 row affected (0.1379 sec)
+
+Rows matched: 1  Changed: 1  Warnings: 0
+ MySQL  localhost:3306 ssl  address_bookservices  SQL > select * from addressbook;
++-----------+----------+------------+----------+-----------+--------------+--------+------------+--------------+
+| firstname | lastname | type       | address  | city      | state        | zip    | phoneNo    | email        |
++-----------+----------+------------+----------+-----------+--------------+--------+------------+--------------+
+| pratik    | lahamge  | profession | rajapeth | amravati  | maharashtra  | 444105 | 8545854585 | pr@gmail.com |
+| sonali    | kolapkar | Friend     | rajapeth | amravati  | maharashtra  | 444605 | 7769525458 | sl@gmail.com |
+| suresh    | dehanti  | family     | rajapeth | palipuram | andrapradesh | 444158 | 8545256325 | sh@gmail.com |
++-----------+----------+------------+----------+-----------+--------------+--------+------------+--------------+
+3 rows in set (0.0010 sec)
+ MySQL  localhost:3306 ssl  address_bookservices  SQL >
+
+====================================================================================================================================
+UC10-Ability to get number of contact persons i.e. count by type
+=========================================================================================================================================
+
+ MySQL  localhost:3306 ssl  address_bookservices  SQL > select count(type) As NumberOfaddressbook FROM addressbook;
++---------------------+
+| NumberOfaddressbook |
++---------------------+
+|                   3 |
++---------------------+
+1 row in set (0.0385 sec)
+ MySQL  localhost:3306 ssl  address_bookservices  SQL >
+
+===================================================================================================================================
+UC11-Ability to add person to both Friend and Family
+============================================================================================================
+
+ MySQL  localhost:3306 ssl  address_bookservices  SQL > update addressbook set type='family' where firstName='sonali';
+Query OK, 1 row affected (0.1231 sec)
+
+Rows matched: 1  Changed: 1  Warnings: 0
+ MySQL  localhost:3306 ssl  address_bookservices  SQL > update addressbook set type='friend' where firstName='shridhar';
+Query OK, 0 rows affected (0.0677 sec)
+
+Rows matched: 0  Changed: 0  Warnings: 0
+ MySQL  localhost:3306 ssl  address_bookservices  SQL > select * addressbook;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'addressbook' at line 1
+ MySQL  localhost:3306 ssl  address_bookservices  SQL > select * from addressbook;
++-----------+----------+------------+----------+-----------+--------------+--------+------------+--------------+
+| firstname | lastname | type       | address  | city      | state        | zip    | phoneNo    | email        |
++-----------+----------+------------+----------+-----------+--------------+--------+------------+--------------+
+| pratik    | lahamge  | profession | rajapeth | amravati  | maharashtra  | 444105 | 8545854585 | pr@gmail.com |
+| sonali    | kolapkar | family     | rajapeth | amravati  | maharashtra  | 444605 | 7769525458 | sl@gmail.com |
+| suresh    | dehanti  | family     | rajapeth | palipuram | andrapradesh | 444158 | 8545256325 | sh@gmail.com |
++-----------+----------+------------+----------+-----------+--------------+--------+------------+--------------+
+3 rows in set (0.0010 sec)
+ MySQL  localhost:3306 ssl  address_bookservices  SQL >
+
